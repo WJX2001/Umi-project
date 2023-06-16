@@ -1,8 +1,8 @@
-
-
-import React from 'react';
-import { Space, Table, Tag } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { stuGet } from '../../api/stu';
+
 
 interface DataType {
   key: string;
@@ -40,32 +40,32 @@ const columns: ColumnsType<DataType> = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
+        <Button type='primary' size='small'>编辑</Button>
+        <Button type='danger' size='small'>删除</Button>
       </Space>
     ),
   },
 ];
 
-// 测试数据 非响应式
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    score: 32,
-    city: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-    birthday: '2023.12.12'
-  },
+const StuList = () => {
+  const [data, setData] = useState<DataType[]>([]);
 
-];
+  useEffect(() => {
+    stuGet().then((res) => {
+      console.log(res);
+      const formattedData = res.data.map((item: DataType, index: number) => ({
+        ...item,
+        key: index.toString(),
+      }));
+      setData(formattedData);
+    });
+  }, []);
 
-const App = () => {
   return (
     <div>
-      <Table columns={columns} dataSource={data}></Table>
+      <Table columns={columns} dataSource={data} />
     </div>
-  )
-}
+  );
+};
 
-export default App;
+export default StuList;
