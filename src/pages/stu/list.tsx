@@ -3,7 +3,6 @@ import { Button, Space, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { stuGet } from '../../api/stu';
 
-
 interface DataType {
   key: string;
   name: string;
@@ -40,30 +39,29 @@ const columns: ColumnsType<DataType> = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <Button type='primary' size='small'>编辑</Button>
-        <Button type='danger' size='small'>删除</Button>
+        <Button type="primary" size="small">
+          编辑
+        </Button>
+        <Button danger size="small">
+          编辑
+        </Button>
       </Space>
     ),
   },
 ];
 
 const StuList = () => {
-  const [data, setData] = useState<DataType[]>([]);
-
+  let [data, setData] = useState<DataType[]>([]);
   useEffect(() => {
     stuGet().then((res) => {
       console.log(res);
-      const formattedData = res.data.map((item: DataType, index: number) => ({
-        ...item,
-        key: index.toString(),
-      }));
-      setData(formattedData);
+      setData(res.data);
     });
   }, []);
 
   return (
     <div>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={data} rowKey="objectId" />
     </div>
   );
 };
