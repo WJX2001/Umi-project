@@ -15,7 +15,7 @@ export default {
         name: '@cname',
         score:'@integer(50,100)',
         city:'@city',
-        time:'@date'
+        birthday:'@date'
       }
     ]
   })
