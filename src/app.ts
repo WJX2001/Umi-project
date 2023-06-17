@@ -17,11 +17,12 @@ export const request = {
     },
   ],
 
-  // 响应拦截
+  // 响应拦截器
   responseInterceptors: [
-    (response: string, options: string) => {
-      console.log('响应拦截器', response, options);
-      return response; // 此处return 的内容是后端下发的数据包
+    async (response, options) => {
+      let res = await response.json();
+      console.log('响应拦截器', res, options);
+      return { data: res.results }; // 此处return 的内容是后端下发的数据包
     },
   ],
 };
