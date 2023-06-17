@@ -4,7 +4,7 @@ import mockjs from 'mockjs';
 let dataList = mockjs.mock({
   code: 200,
   msg: '学员列表加载成功',
-  'data|100': [
+  'results|100': [
     {
       'objectId|+1': 1,
       name: '@cname',
@@ -24,10 +24,10 @@ export default {
 
   'DELETE /classes/stu': (req, res) => {
     const { id } = req.query;
-    for (let i = 0; i < dataList.data.length; i++) {
-      if (dataList.data[i].objectId == id) {
+    for (let i = 0; i < dataList.results.length; i++) {
+      if (dataList.results[i].objectId == id) {
         // console.log(dataList.data[i].objectId)
-        dataList.data.splice(i, 1);
+        dataList.results.splice(i, 1);
         res.send({
           code: 200,
           msg: '删除成功',

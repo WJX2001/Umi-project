@@ -15,6 +15,7 @@ interface DataType {
 
 const StuList = () => {
   let [data, setData] = useState([]);
+  let [loading, setLoading] = useState(true);
   const columns: ColumnsType<DataType> = [
     {
       title: '姓名',
@@ -65,15 +66,24 @@ const StuList = () => {
   ];
 
   useEffect(() => {
+    //TODO:  开启 loading效果
+    // 初始设置为true 所以自动开启
     stuGet().then((res) => {
       console.log(res);
-      setData(res.data);
+      setData(res.results);
+      // TODO: 关闭loading效果
+      setLoading(false);
     });
   }, []);
 
   return (
     <div>
-      <Table columns={columns} dataSource={data} rowKey="objectId" />
+      <Table
+        loading={loading}
+        columns={columns}
+        dataSource={data}
+        rowKey="objectId"
+      />
     </div>
   );
 };

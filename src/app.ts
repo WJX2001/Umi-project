@@ -4,8 +4,15 @@
 export const request = {
   // 请求拦截
   requestInterceptors: [
-    (url: string, options: string) => {
+    (url, options) => {
       console.log('请求拦截器', url, options);
+      // 如果想要测试本地数据，请注释以下代码(如果想测试线上环境，请带上下面的内容)
+      options.url = 'https://sn7hajub.lc-cn-n1-shared.com/1.1' + url;
+      options.headers = {
+        'X-LC-Id': 'Sn7HaJubkpny1rWPfq2Z1Oa5-gzGzoHsz', //务必改为自己的Id
+        'X-LC-Key': 'QXKS65JgjITfDHUfPlJpC4eJ', //务必改为自己的Key
+        'Content-Type': 'application/json',
+      };
       return options; // 此处return 的内容就是自定义请求配置
     },
   ],
