@@ -1,5 +1,7 @@
 // 在这个文件中做项目的运行时配置
 
+import { message } from 'antd';
+
 // 异步请求相关运行时配置
 export const request = {
   // 请求拦截
@@ -19,8 +21,13 @@ export const request = {
 
   // 响应拦截器
   responseInterceptors: [
-    async (response, options) => {
+    async (response: any, options: any) => {
       let res = await response.json();
+
+      if (res.objectId && options.method.toLowerCase() == 'post') {
+        // console.log('新增成功')
+        message.success('新增成功');
+      }
       console.log('响应拦截器', res, options);
       return { data: res.results }; // 此处return 的内容是后端下发的数据包
     },
