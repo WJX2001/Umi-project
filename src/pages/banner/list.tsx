@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Space, Table, Image } from 'antd';
+import { Button, Space, Table, Image, Modal } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { bannerGet, bannerDelete } from '../../api/cake';
 import { useRequest } from 'umi';
+import ListEdit from './listEdit';
 
 interface DataType {
   key: string;
@@ -15,7 +16,6 @@ interface DataType {
 }
 
 const BannerList = () => {
-  let [data, setData] = useState([]);
   // let [loading, setLoading] = useState(true);
   const columns: ColumnsType<DataType> = [
     {
@@ -50,7 +50,15 @@ const BannerList = () => {
       key: 'action',
       render: (text, record, index) => (
         <Space size="middle">
-          <Button type="primary" size="small">
+          <Button
+            type="primary"
+            size="small"
+            onClick={() => {
+              console.log(record.imgurl, 'sb');
+              setrecordForm(record);
+              setOpen(true);
+            }}
+          >
             编辑
           </Button>
 
@@ -83,6 +91,27 @@ const BannerList = () => {
   //? 方法三： 对方法二的优化 简化userequest 的使用 需要在app.ts 拦截器中提前统一处理
   const { loading, error } = useRequest(bannerGet);
 
+  // 弹窗相关的状态管理
+  let [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const [recordForm, setrecordForm] = useState({});
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setOpen(false);
+  };
+
+  // TODO: 这里可以用useRequest优化 loading操作
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+    }, 1000);
+  };
+
   return (
     <div>
       <Table
@@ -90,6 +119,12 @@ const BannerList = () => {
         columns={columns}
         dataSource={data}
         rowKey="objectId"
+      />
+      <ListEdit
+        open={open}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        record={recordForm}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import '../utils/init-leancloud-sdk'; // 初始化leanCloud的SDK包
@@ -29,6 +29,9 @@ const ImgUpload = (props: any) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
 
+  useEffect(() => {
+    console.log(props.value, '没找到吧');
+  });
   // console.log('ImgUpload组件的props',props)
   // 检测 action接口的上传进度
   // const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
@@ -84,10 +87,11 @@ const ImgUpload = (props: any) => {
         showUploadList={false}
         customRequest={customUpload}
         beforeUpload={beforeUpload}
-        // onChange={handleChange}
       >
         {imageUrl ? (
           <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+        ) : props.value ? (
+          <img src={props.value} alt="avatar" style={{ width: '100%' }} />
         ) : (
           uploadButton
         )}
