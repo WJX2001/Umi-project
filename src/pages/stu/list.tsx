@@ -15,8 +15,9 @@ interface DataType {
 }
 
 const StuList = () => {
-  // let [data, setData] = useState([]);
+  let [data, setData] = useState([]);
   // let [loading, setLoading] = useState(true);
+
   const columns: ColumnsType<DataType> = [
     {
       title: '姓名',
@@ -51,13 +52,13 @@ const StuList = () => {
           <Button
             danger
             size="small"
-            // onClick={() => {
-            //   stuDelete(record.objectId).then((res) => {
-            //     console.log(res);
-            //     data.splice(index, 1);
-            //     setData([...data]);
-            //   });
-            // }}
+            onClick={() => {
+              stuDelete(record.objectId).then((res) => {
+                console.log(res);
+                data.splice(index, 1);
+                setData([...data]);
+              });
+            }}
           >
             删除
           </Button>
@@ -65,6 +66,15 @@ const StuList = () => {
       ),
     },
   ];
+
+  // 后续改进 便于删除操作数据，需要useState管理数据，而不是直接通过useRequest拿到数据
+  useEffect(() => {
+    console.log(1111);
+    stuGet().then((res) => {
+      console.log('wjx', res);
+      setData(res.data);
+    });
+  }, []);
 
   // useEffect(() => {
   //?  方法一： 需要开发者自行处理Loading等请求交互效果
@@ -92,7 +102,7 @@ const StuList = () => {
    */
 
   //? 方法三： 对方法二的优化 简化userequest 的使用 需要在app.ts 拦截器中提前统一处理
-  const { data, loading, error } = useRequest(stuGet);
+  const { loading, error } = useRequest(stuGet);
 
   return (
     <div>

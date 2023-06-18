@@ -42,4 +42,20 @@ export default [
       },
     ],
   },
+  {
+    path: '/banner',
+    name: '轮播管理',
+    routes: [
+      {
+        path: 'banner/list',
+        component: '@/pages/banner/list',
+        name: '轮播列表',
+      },
+      {
+        path: 'banner/pub',
+        component: '@/pages/banner/pub',
+        name: '轮播录入',
+      },
+    ],
+  },
 ];
