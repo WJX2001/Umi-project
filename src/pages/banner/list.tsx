@@ -54,7 +54,6 @@ const BannerList = () => {
             type="primary"
             size="small"
             onClick={() => {
-              console.log(record.imgurl, 'sb');
               setrecordForm(record);
               setOpen(true);
             }}
@@ -66,10 +65,16 @@ const BannerList = () => {
             danger
             size="small"
             onClick={() => {
-              bannerDelete(record.objectId).then((res) => {
-                console.log(res);
-                data.splice(index, 1);
-                setData([...data]);
+              Modal.confirm({
+                title: '提示',
+                content: '你确定要删除吗？',
+                onOk: () => {
+                  bannerDelete(record.objectId).then((res) => {
+                    console.log(res);
+                    data.splice(index, 1);
+                    setData([...data]);
+                  });
+                },
               });
             }}
           >
@@ -79,11 +84,10 @@ const BannerList = () => {
       ),
     },
   ];
+  let [data, setData] = useState([]);
 
   useEffect(() => {
-    console.log(1111);
     bannerGet().then((res) => {
-      console.log('wjx', res);
       setData(res.data);
     });
   }, []);
@@ -92,7 +96,6 @@ const BannerList = () => {
   const { loading, error } = useRequest(bannerGet);
 
   // 弹窗相关的状态管理
-  let [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -112,6 +115,14 @@ const BannerList = () => {
     }, 1000);
   };
 
+  const handelSetRecord = (value: any) => {
+    setrecordForm(value);
+  };
+
+  const handelSetData = (values: any) => {
+    setData(values);
+  };
+
   return (
     <div>
       <Table
@@ -124,6 +135,7 @@ const BannerList = () => {
         open={open}
         handleOk={handleOk}
         handleCancel={handleCancel}
+        handelSetData={handelSetData}
         record={recordForm}
       />
     </div>

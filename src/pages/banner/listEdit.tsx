@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, Spin, Modal } from 'antd';
 import ImgUpload from '@/components/imgUpload';
-import { bannerAdd } from '@/api/cake';
+import { bannerUpdate } from '@/api/cake';
 import { useRequest } from 'umi';
 
 interface IProps {
   open: boolean;
   handleCancel: () => void;
   handleOk: () => void;
+  handelSetData: (value: any) => void;
   record: any; // 新增 record 属性
 }
 
@@ -20,34 +21,56 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-const ListEdit = ({ open, record, handleCancel, handleOk }: IProps) => {
+const ListEdit = ({
+  open,
+  record,
+  handleCancel,
+  handleOk,
+  handelSetData,
+}: IProps) => {
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    console.log(record, 'record');
-    form.setFieldsValue(record);
-  }, [record]);
-
-  let {
+  const {
     data,
     loading: loadingSubmit,
     run,
   } = useRequest(
     (value) => {
       console.log('useRequest执行了', value);
-      return bannerAdd(value);
+      console.log('data被执行啦', data);
+      return bannerUpdate(record.objectId, value);
     },
     { manual: true }, // 开启手动执行
   );
 
   const onFinish = (values: any) => {
     // 手动执行useRequest
+    console.log(values, '狄仁杰');
     run(values);
   };
   const onReset = () => {
     form.resetFields();
   };
-  // 测试数据
+
+  useEffect(() => {
+    console.log(record, 'edit页面的传入值');
+    form.setFieldsValue(record);
+  }, [record]);
+
+  useEffect(() => {
+    // 更新成功后将数值传回
+    if (data) {
+      console.log('data更新成功', data);
+    }
+  }, [data]);
+
+  const formData = form.getFieldsValue();
+  useEffect(() => {
+    console.log('表单值你在这啊', formData);
+    if (formData) {
+      // handelSetData(formData)
+    }
+  }, [formData]);
 
   return (
     <>
@@ -84,7 +107,7 @@ const ListEdit = ({ open, record, handleCancel, handleOk }: IProps) => {
           <Form.Item {...tailLayout}>
             {/* 这里的htmlType指的是表单中onFinish事件 */}
             <Button type="primary" htmlType="submit" onClick={handleOk}>
-              确定修改
+              更新
             </Button>
             <Button htmlType="button" onClick={onReset}>
               重置

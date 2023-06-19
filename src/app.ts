@@ -24,12 +24,15 @@ export const request = {
     async (response: any, options: any) => {
       let res = await response.json();
 
-      if (res.objectId && options.method.toLowerCase() == 'post') {
-        // console.log('新增成功')
-        message.success('新增成功');
+      if (res.objectId) {
+        let method = options.method.toLowerCase();
+        let msg = method == 'post' ? '新增成功' : '更新成功,请刷新页面';
+        message.success(msg);
       }
       console.log('响应拦截器', res, options);
-      return { data: res.results }; // 此处return 的内容是后端下发的数据包
+      let { results } = res;
+      let data = results ? results : res;
+      return { data }; // 此处return 的内容是后端下发的数据包
     },
   ],
 };

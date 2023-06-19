@@ -30,8 +30,9 @@ const ImgUpload = (props: any) => {
   const [imageUrl, setImageUrl] = useState<string>();
 
   useEffect(() => {
-    console.log(props.value, '没找到吧');
-  });
+    console.log(props, 'upload传入的数值');
+  }, [props]);
+
   // console.log('ImgUpload组件的props',props)
   // 检测 action接口的上传进度
   // const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {

@@ -8,6 +8,13 @@ export const cateAdd = (cateObj: any) => {
   });
 };
 
+// 分类列表
+export const cateGet = () => {
+  return request('/classes/CakeCate', {
+    method: 'GET',
+  });
+};
+
 // 新增轮播
 export const bannerAdd = (bannerObj: any) => {
   return request('/classes/CakeBanner', {
@@ -28,5 +35,14 @@ export const bannerDelete = (id: string) => {
   // 删除
   return request(`/classes/CakeBanner?id=${id}`, {
     method: 'DELETE',
+  });
+};
+
+// 更新轮播图
+export const bannerUpdate = (objectId: string, bannerObj: any) => {
+  // 更新轮播
+  return request(`/classes/CakeBanner/${objectId}`, {
+    method: 'PUT',
+    data: bannerObj,
   });
 };
