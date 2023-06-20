@@ -46,3 +46,30 @@ export const bannerUpdate = (objectId: string, bannerObj: any) => {
     data: bannerObj,
   });
 };
+
+// 新增商品
+export const goodsAdd = (cakeObj: any) => {
+  return request('/classes/CakeGoods', {
+    method: 'POST',
+    data: cakeObj,
+  });
+};
+
+// 商品自动转存
+export const goodsExchange = (cakelist: any) => {
+  let batchObj: { request: { method: string; path: string; body: any }[] } = {
+    request: [],
+  };
+  console.log(cakelist, 'wjx');
+  cakelist?.forEach((item: any) => {
+    batchObj.request.push({
+      method: 'POST',
+      path: '/1.1/classes/CakeGoods',
+      body: item,
+    });
+  });
+  return request('/batch', {
+    method: 'POST',
+    data: batchObj,
+  });
+};

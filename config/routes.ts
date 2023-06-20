@@ -1,13 +1,11 @@
-import {
-  AreaChartOutlined,
-  GitlabOutlined,
-  AliwangwangOutlined,
-  WindowsOutlined,
-  RadarChartOutlined,
-} from '@ant-design/icons';
-
 export default [
   // 配置式路由
+  {
+    path: '/login',
+    component: '@/pages/login/index',
+    name: '登录面板',
+    layout: false,
+  },
   {
     path: '/',
     component: '@/pages/index',
