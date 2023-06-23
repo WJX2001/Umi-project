@@ -1,13 +1,15 @@
 // 在这个文件中做项目的运行时配置
 
-import { message } from 'antd';
+import { Divider, message } from 'antd';
 import './utils/init-leancloud-sdk'; //初始化leanCloud的sdk
 import {
   BasicLayoutProps,
   Settings as LayoutSettings,
 } from '@ant-design/pro-layout';
-
+import HeaderDropMenu from './components/HeaderDropMenu';
 import { history } from 'umi';
+import Test from './pages/test';
+import { isShow } from './test';
 
 // 异步请求相关运行时配置
 export const request = {
@@ -30,9 +32,11 @@ export const request = {
   responseInterceptors: [
     async (response: any, options: any) => {
       let res = await response.json();
-
-      if (res.objectId) {
-        let method = options.method.toLowerCase();
+      let method = options.method.toLowerCase();
+      console.log(res, 'wjxjjjj');
+      if (method == 'post' && res.sessionToken) {
+        message.success('登录成功');
+      } else {
         let msg = method == 'post' ? '新增成功' : '更新成功,请刷新页面';
         message.success(msg);
       }
@@ -50,21 +54,28 @@ export async function getInitialState() {
     isLogin: false,
     userInfo: null,
   };
+  let info = localStorage.getItem('userInfo');
+  if (info) {
+    userState = {
+      isLogin: true,
+      userInfo: JSON.parse(info),
+    };
+  }
   console.log('getInitialState运行时配置', userState);
   return userState;
 }
 
 // layout的运行时配置，自定义控制Layout的渲染逻辑
-export const layout = ({ initialState }: any) => {
+export const layout = ({ initialState }) => {
   return {
     onPageChange: () => {
-      // 此处可以根据用户的登录状态引导用户进行指定的访问
-      console.log('onPageChange', initialState);
-      let { isLogin } = initialState;
-      if (!isLogin) {
-        // 此时没有登录
+      // 此处可以根据用户的登录状态，引导用户进行指定的路由访问
+      let { location } = history;
+      if (!initialState.isLogin && location.pathname !== '/login') {
+        console.log('onPageChange', initialState, location);
         history.push('/login');
       }
     },
+    rightContentRender: () => HeaderDropMenu(),
   };
 };

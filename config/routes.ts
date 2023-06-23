@@ -5,6 +5,7 @@ export default [
     component: '@/pages/login/index',
     name: '登录面板',
     layout: false,
+    hideInMenu: true,
   },
   {
     path: '/',
