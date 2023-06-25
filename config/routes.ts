@@ -87,4 +87,21 @@ export default [
       },
     ],
   },
+  {
+    path: '/dva',
+    name: '状态管理',
+    icon: 'AreaChartOutlined',
+    routes: [
+      {
+        path: '/dva/a',
+        component: '@/pages/testdva/ComA',
+        name: 'A组件',
+      },
+      {
+        path: '/dva/b',
+        component: '@/pages/testdva/ComB',
+        name: 'B组件',
+      },
+    ],
+  },
 ];

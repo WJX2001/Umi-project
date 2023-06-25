@@ -1,5 +1,5 @@
 import { defineConfig } from 'umi';
-import routes from '../config/routes'
+import routes from '../config/routes';
 export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
@@ -13,6 +13,10 @@ export default defineConfig({
     name: 'Ant Design',
     locale: true,
     layout: 'side',
+  },
+  dva: {
+    // 启用dva进行状态管理
+    immer: false,
   },
   routes,
   fastRefresh: {},
